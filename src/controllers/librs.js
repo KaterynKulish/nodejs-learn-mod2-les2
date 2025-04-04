@@ -2,15 +2,28 @@ import createHttpError from 'http-errors';
 
 import { getLibrById, getLibrs } from '../servises/librs.js';
 
-// тут після створення декоратора прибрала try/catch/next :
 export const getLibrsController = async (req, res) => {
-  const data = await getLibrs();
-  res.json({
-    status: 200,
-    message: 'Successfully find libr',
-    data,
-  });
+  try {
+    const data = await getLibrs();
+    res.json({
+      status: 200,
+      message: 'Successfully find libr',
+      data,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
+
+// тут після створення декоратора прибрала try/catch/next :
+// export const getLibrsController = async (req, res) => {
+//   const data = await getLibrs();
+//   res.json({
+//     status: 200,
+//     message: 'Successfully find libr',
+//     data,
+//   });
+// };
 
 // тут після створення декоратора залишила try/catch/next:
 export const getLibrsBiIdController = async (req, res, next) => {
@@ -44,6 +57,10 @@ export const getLibrsBiIdController = async (req, res, next) => {
     // const { status = 500, message = 'Server error' } = error;
     // res.status(status).json({
     //   message,
+    // });
+
+    // res.status(500).json({
+    //   message: error.message,
     // });
   }
 };
