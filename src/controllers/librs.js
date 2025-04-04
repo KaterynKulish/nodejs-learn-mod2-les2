@@ -13,7 +13,7 @@ export const getLibrsController = async (req, res) => {
 };
 
 // тут після створення декоратора залишила try/catch/next:
-export const getLibrsBiIdController = async (req, res) => {
+export const getLibrsBiIdController = async (req, res, next) => {
   try {
     console.log(req.params); //тут повертається те, що після : в адресі запиту(динамічний параметр)
     const { id } = req.params;

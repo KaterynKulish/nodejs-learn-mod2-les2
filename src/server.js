@@ -19,7 +19,7 @@ export const startServer = () => {
 
   //========== middlewares, потрібні для початку(які застосовуються для кожного запиту):
   app.use(cors());
-  app.use(express.json());
+  app.use(express.json()); // прописує express json
   // app.use(logger);
 
   //========== маршрути
@@ -34,7 +34,7 @@ export const startServer = () => {
   // для обробки помилок які передаємо в аргумент next:
   app.use(errorHandler);
 
-  // запускає сервер:
+  // запускає сервер на порті:
   //   const port = Number(process.env.PORT);
   // за допом.ф-ції getEnvVar:
   const port = Number(getEnvVar('PORT', 3000));
