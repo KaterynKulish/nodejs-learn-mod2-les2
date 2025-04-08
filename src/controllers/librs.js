@@ -1,6 +1,12 @@
 import createHttpError from 'http-errors';
 
-import { getLibrById, getLibrs } from '../servises/librs.js';
+import {
+  addLibr,
+  deleteLibrById,
+  getLibrById,
+  getLibrs,
+  updateLibr,
+} from '../servises/librs.js';
 
 export const getLibrsController = async (req, res) => {
   try {
@@ -63,4 +69,54 @@ export const getLibrsBiIdController = async (req, res, next) => {
     //   message: error.message,
     // });
   }
+};
+
+export const addLibrController = async (req, res) => {
+  console.log(req.body);
+
+  const data = await addLibr(req.body);
+
+  res.status(201).json({
+    status: 201,
+    message: 'Successfully add movie',
+    data,
+  });
+};
+
+export const upsertLibrController = async (req, res) => {
+  const { id } = req.params;
+  const { data, isNew } = await updateLibr(id, req.body, { upsert: true });
+  const status = isNew ? 201 : 200;
+
+  res.status(status).json({
+    status,
+    message: 'Successfully updade',
+    data,
+  });
+};
+
+export const patchLibrController = async (req, res) => {
+  const { id } = req.params;
+  const result = await updateLibr(id, req.body);
+
+  if (!result) {
+    throw createHttpError(404, `Libr with id=${id} not found`);
+  }
+
+  res.json({
+    status: 200,
+    message: 'Successfully updade libr',
+    data: result.data,
+  });
+};
+
+export const deleteLibrController = async (req, res) => {
+  const { id } = req.params;
+  const data = await deleteLibrById(id);
+
+  if (!data) {
+    throw createHttpError(404, `Libr with id=${id} not found`);
+  }
+
+  res.status(204).send();
 };
