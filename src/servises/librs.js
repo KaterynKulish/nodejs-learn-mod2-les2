@@ -14,7 +14,10 @@ export const addLibr = (payload) => LibrCollection.create(payload);
 export const updateLibr = async (_id, payload, option = {}) => {
   const { upsert = false } = option;
   const rawResult = await LibrCollection.findOneAndUpdate({ _id }, payload, {
-    new: true, // для виправлення глюку в Постмані (не виводяться зміни)
+    // винесли new: true i runValidators: true в хук
+    /*    new: true, // для виправлення глюку в Постмані (не виводяться зміни)
+    runValidators: true, // щоб при оновленні викликав валідацію по схемі Schema */
+
     upsert, // щоб запит не тільки оновлював, і додавав
     includeResultMetadata: true,
   });

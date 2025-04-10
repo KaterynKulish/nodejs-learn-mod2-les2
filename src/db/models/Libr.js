@@ -1,5 +1,9 @@
 import { Schema, model } from 'mongoose';
 
+import { typeList } from '../../constants/librs.js';
+
+import { handleSaveError, setUpdateSettings } from './hooks.js';
+
 const librSchema = new Schema(
   {
     title: {
@@ -8,7 +12,7 @@ const librSchema = new Schema(
     },
     genre: {
       type: String,
-      enum: ['kids', 'roman'],
+      enum: typeList,
       default: 'kids',
       required: true,
     },
@@ -22,6 +26,20 @@ const librSchema = new Schema(
     versionKey: false,
   },
 );
+// mongoose-хук (post - це після;  doc - це об'єкт з фронтенда; next - це "роби далі те що заплановано"):
+librSchema.post('save', handleSaveError);
+
+librSchema.pre(
+  'findOneAndUpdate',
+  setUpdateSettings,
+  //хук для new:true i runValidators:true. Винесли його в файл hooks.js
+  /*function (next) {
+  this.options.new = true;
+  this.options.runValidator = true;
+  next();
+  }*/
+);
+librSchema.post('findOneAndUpdate', handleSaveError);
 
 const LibrCollection = model('libr', librSchema);
 

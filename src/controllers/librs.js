@@ -8,6 +8,8 @@ import {
   updateLibr,
 } from '../servises/librs.js';
 
+// import { librAddSchema } from '../validation/librs.js';
+
 export const getLibrsController = async (req, res) => {
   try {
     const data = await getLibrs();
@@ -72,7 +74,23 @@ export const getLibrsBiIdController = async (req, res, next) => {
 };
 
 export const addLibrController = async (req, res) => {
-  console.log(req.body);
+  //   const validateResult = librAddSchema.validate(req.body);
+  //   console.log(validateResult); //це об'єкт,що додається до БД
+
+  /*  const { error } = librAddSchema.validate(req.body, { abortEarly: false });
+  if (error) {
+    throw createHttpError(400, error.message);
+  }*/
+
+  /* try {
+    await librAddSchema.validateAsync(req.body, {
+      abortEarly: false,
+    });
+  } catch (error) {
+    throw createHttpError(400, error.message);
+  } */
+
+  // console.log(req.body);
 
   const data = await addLibr(req.body);
 

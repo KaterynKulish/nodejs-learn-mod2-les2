@@ -15,16 +15,36 @@ import {
   upsertLibrController,
 } from '../controllers/librs.js';
 
+import { isValidId } from '../middlewares/isValidId.js';
+
+import { validateBody } from '../utils/validateBody.js';
+
+import { librAddSchema, librUpdateSchema } from '../validation/librs.js';
+
 librRouter.get('/', ctrlWrapper(getLibrsController));
 
-librRouter.get('/:id', ctrlWrapper(getLibrsBiIdController));
+librRouter.get('/:id', isValidId, ctrlWrapper(getLibrsBiIdController));
 
-librRouter.post('/', ctrlWrapper(addLibrController));
+librRouter.post(
+  '/',
+  validateBody(librAddSchema),
+  ctrlWrapper(addLibrController),
+);
 
-librRouter.put('/:id', ctrlWrapper(upsertLibrController));
+librRouter.put(
+  '/:id',
+  isValidId,
+  validateBody(librAddSchema),
+  ctrlWrapper(upsertLibrController),
+);
 
-librRouter.patch('/:id', ctrlWrapper(patchLibrController));
+librRouter.patch(
+  '/:id',
+  isValidId,
+  validateBody(librUpdateSchema),
+  ctrlWrapper(patchLibrController),
+);
 
-librRouter.delete('/:id', ctrlWrapper(deleteLibrController));
+librRouter.delete('/:id', isValidId, ctrlWrapper(deleteLibrController));
 
 export default librRouter;
