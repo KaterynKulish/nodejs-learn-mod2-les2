@@ -1,6 +1,45 @@
 import LibrCollection from '../db/models/Libr.js';
 
-export const getLibrs = () => LibrCollection.find();
+import { sortList } from '../constants/index.js';
+
+import { calcPaginationData } from '../utils/calcPaginationData.js';
+
+export const getLibrs = async ({
+  page = 1,
+  perPage = 10,
+  sortBy = '_id',
+  sortOrder = sortList[0],
+  filters = {},
+}) => {
+  const skip = (page - 1) * perPage; // для наступних сторінок - скільки документів пропустити з початку колекції
+
+  const librQuery = LibrCollection.find(); //для фільтрації методом Query Builder. Без await повернеться об'єкт запиту
+
+  if (filters.genre) {
+    librQuery.where('genre').equals(filters.genre);
+  }
+  if (filters.minTotalPage) {
+    librQuery.where('total_page').gte(filters.minTotalPage);
+  }
+  if (filters.maxTotalPage) {
+    librQuery.where('total_page').lte(filters.maxTotalPage);
+  }
+
+  // const items = await LibrCollection.find()
+  const items = await librQuery
+    .skip(skip)
+    .limit(perPage)
+    .sort({ [sortBy]: sortOrder });
+
+  // const totalItems = await LibrCollection.find()
+  const totalItems = await LibrCollection.find()
+    .merge(librQuery)
+    .countDocuments();
+
+  const paginationData = calcPaginationData({ page, perPage, totalItems });
+
+  return { items, page, perPage, totalItems, ...paginationData };
+};
 
 export const getLibrById = (id) => {
   //   throw new Error('Database crashed'); // для імітації не працюючого бекенду

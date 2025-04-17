@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-import { typeList } from '../../constants/librs.js';
+import { typeList, minYear } from '../../constants/librs.js';
 
 import { handleSaveError, setUpdateSettings } from './hooks.js';
 
@@ -18,6 +18,11 @@ const librSchema = new Schema(
     },
     total_page: {
       type: Number,
+      required: true,
+    },
+    year: {
+      type: Number,
+      min: minYear,
       required: true,
     },
   },
@@ -40,6 +45,8 @@ librSchema.pre(
   }*/
 );
 librSchema.post('findOneAndUpdate', handleSaveError);
+
+export const librSortFields = ['title', 'genre', 'total_page', 'year']; //для сортування по полям sortBy
 
 const LibrCollection = model('libr', librSchema);
 

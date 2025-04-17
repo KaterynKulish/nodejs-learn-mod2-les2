@@ -10,17 +10,27 @@ import {
 
 // import { librAddSchema } from '../validation/librs.js';
 
+import { parsePagenationParams } from '../utils/parsePagenationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
+import { librSortFields } from '../db/models/Libr.js';
+import { parseLibrFilterParams } from '../utils/filters/parseLibrFilterParams.js';
+
 export const getLibrsController = async (req, res) => {
-  try {
-    const data = await getLibrs();
-    res.json({
-      status: 200,
-      message: 'Successfully find libr',
-      data,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+  // console.log(req.query); // тут параметри запиту від фронтенту для пагінації
+  const paginationParams = parsePagenationParams(req.query);
+  // console.log(paginationParams);
+
+  const sortParams = parseSortParams(req.query, librSortFields);
+
+  const filters = parseLibrFilterParams(req.query);
+  // console.log(filters);
+
+  const data = await getLibrs({ ...paginationParams, ...sortParams, filters });
+  res.json({
+    status: 200,
+    message: 'Successfully find libr',
+    data,
+  });
 };
 
 // тут після створення декоратора прибрала try/catch/next :
