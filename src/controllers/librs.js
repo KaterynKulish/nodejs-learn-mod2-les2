@@ -25,6 +25,10 @@ export const getLibrsController = async (req, res) => {
   const filters = parseLibrFilterParams(req.query);
   // console.log(filters);
 
+  // const { _id: userId } = req.user; //тянемо userId з authenticate
+  // filters.userId = userId; //додаємо юзера до фільтрації
+  filters.userId = req.user._id; //додаємо юзера до фільтрації - простіший варіант
+
   const data = await getLibrs({ ...paginationParams, ...sortParams, filters });
   res.json({
     status: 200,
@@ -102,7 +106,9 @@ export const addLibrController = async (req, res) => {
 
   // console.log(req.body);
 
-  const data = await addLibr(req.body);
+  const { _id: userId } = req.user; //тянемо userId з authenticate
+
+  const data = await addLibr({ ...req.body, userId });
 
   res.status(201).json({
     status: 201,

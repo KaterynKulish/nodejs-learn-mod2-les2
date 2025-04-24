@@ -15,6 +15,9 @@ export const getLibrs = async ({
 
   const librQuery = LibrCollection.find(); //для фільтрації методом Query Builder. Без await повернеться об'єкт запиту
 
+  if (filters.userId) {
+    librQuery.where('userId').equals(filters.userId);
+  }
   if (filters.genre) {
     librQuery.where('genre').equals(filters.genre);
   }
@@ -25,16 +28,16 @@ export const getLibrs = async ({
     librQuery.where('total_page').lte(filters.maxTotalPage);
   }
 
+  // const totalItems = await LibrCollection.find()
+  const totalItems = await LibrCollection.find()
+    .merge(librQuery)
+    .countDocuments();
+
   // const items = await LibrCollection.find()
   const items = await librQuery
     .skip(skip)
     .limit(perPage)
     .sort({ [sortBy]: sortOrder });
-
-  // const totalItems = await LibrCollection.find()
-  const totalItems = await LibrCollection.find()
-    .merge(librQuery)
-    .countDocuments();
 
   const paginationData = calcPaginationData({ page, perPage, totalItems });
 

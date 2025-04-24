@@ -21,6 +21,10 @@ import { validateBody } from '../utils/validateBody.js';
 
 import { librAddSchema, librUpdateSchema } from '../validation/librs.js';
 
+import { authenticate } from '../middlewares/authenticate.js';
+
+librRouter.use(authenticate); //перевірка валідності токену перед всіма запитами
+
 librRouter.get('/', ctrlWrapper(getLibrsController));
 
 librRouter.get('/:id', isValidId, ctrlWrapper(getLibrsBiIdController));

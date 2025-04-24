@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import librRouter from './routers/librs.js';
+import authRouter from './routers/auth.js';
 
 // import dotenv from 'dotenv';
 // dotenv.config();
@@ -19,6 +21,7 @@ export const startServer = () => {
 
   //========== middlewares, потрібні для початку(які застосовуються для кожного запиту):
   app.use(cors());
+  app.use(cookieParser());
   app.use(express.json()); // прописує express json
   // app.use(logger);
 
@@ -26,6 +29,7 @@ export const startServer = () => {
   // запит для перевірки, що сервер працює:
 
   app.use('/librs', librRouter); //в об'єкті librRouter знаходяться обробники для запитів на шлях з librs
+  app.use('/auth', authRouter);
 
   //========== middlewares, потрібні після:
   // запит на адресу, якої немає:
