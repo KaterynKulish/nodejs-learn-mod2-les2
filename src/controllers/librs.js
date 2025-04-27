@@ -27,7 +27,7 @@ export const getLibrsController = async (req, res) => {
 
   // const { _id: userId } = req.user; //тянемо userId з authenticate
   // filters.userId = userId; //додаємо юзера до фільтрації
-  filters.userId = req.user._id; //додаємо юзера до фільтрації - простіший варіант
+  filters.userId = req.user._id; //додаємо юзера до фільтрів - простіший варіант
 
   const data = await getLibrs({ ...paginationParams, ...sortParams, filters });
   res.json({
@@ -106,7 +106,7 @@ export const addLibrController = async (req, res) => {
 
   // console.log(req.body);
 
-  const { _id: userId } = req.user; //тянемо userId з authenticate
+  const { _id: userId } = req.user; //беремо _id з об'єкта user, записуємо його в userId
 
   const data = await addLibr({ ...req.body, userId });
 

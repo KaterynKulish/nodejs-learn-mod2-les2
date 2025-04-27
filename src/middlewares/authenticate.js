@@ -3,8 +3,8 @@ import createHttpError from 'http-errors';
 import { findSession, findUser } from '../servises/auth.js';
 
 export const authenticate = async (req, res, next) => {
-  //   const { authorization } = req.headers; //забираємо заголовок authorization - 1 варіант
-  const authorization = req.get('Authorization'); //2 варіант
+  //   const { authorization } = req.headers; //забираємо заголовок authorization (з headers в Postman)- 1 варіант
+  const authorization = req.get('Authorization'); //2 варіант -
   if (!authorization) {
     return next(createHttpError(401, 'Authorization header missing'));
   }
