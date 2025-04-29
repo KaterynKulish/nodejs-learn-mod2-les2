@@ -3,6 +3,7 @@ import {
   logoutUser,
   refreshUser,
   registerUser,
+  verifyUser,
 } from '../servises/auth.js';
 
 const setupSession = (res, session) => {
@@ -23,6 +24,13 @@ export const registerController = async (req, res) => {
   res.status(201).json({
     status: 201,
     message: 'Successfully register user',
+  });
+};
+export const verifyController = async (req, res) => {
+  await verifyUser(req.query.token);
+
+  res.json({
+    message: 'Email verified!',
   });
 };
 

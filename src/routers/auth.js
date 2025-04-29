@@ -7,6 +7,7 @@ import {
   logoutController,
   refreshController,
   registerController,
+  verifyController,
 } from '../controllers/auth.js';
 
 const authRouter = Router(); //ф-ція Router() створює об'єкт  де зберігатимуться маршрути .get
@@ -17,6 +18,8 @@ authRouter.post(
   validateBody(authRegisterSchema),
   ctrlWrapper(registerController),
 );
+
+authRouter.get('/verify', ctrlWrapper(verifyController));
 
 //маршрут для запиту на login
 authRouter.post(
