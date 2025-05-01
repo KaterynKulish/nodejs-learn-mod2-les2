@@ -11,12 +11,12 @@ const nodemailerConfig = {
   port: 465,
   secure: true,
   auth: {
-    user,
-    pass,
+    user, //пошта поштового серверу
+    pass, //пароль від поштового серверу
   },
 };
 
-const transport = nodemailer.createTransport(nodemailerConfig);
+const transport = nodemailer.createTransport(nodemailerConfig); //це об'єкт,який відправляє лист
 
 // const data = {
 //   to: 'qweqwe@qwe.com',

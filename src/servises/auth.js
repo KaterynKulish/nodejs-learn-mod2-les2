@@ -56,6 +56,8 @@ export const registerUser = async (payload) => {
     password: hashPassword,
   });
 
+  //-------------------------------------
+
   const token = jwt.sign({ email }, jwtSecret, {
     expiresIn: '24h',
   });
@@ -86,6 +88,8 @@ export const verifyUser = (token) => {
     throw createHttpError(401, error.message);
   }
 };
+
+//-------------------------------------------------
 
 export const loginUser = async (payload) => {
   const { email, password } = payload;

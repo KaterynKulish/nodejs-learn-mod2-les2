@@ -26,6 +26,7 @@ export const registerController = async (req, res) => {
     message: 'Successfully register user',
   });
 };
+
 export const verifyController = async (req, res) => {
   await verifyUser(req.query.token);
 
