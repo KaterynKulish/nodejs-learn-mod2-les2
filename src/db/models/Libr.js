@@ -30,6 +30,11 @@ const librSchema = new Schema(
       ref: 'user',
       required: true,
     },
+    posterUrl: {
+      type: String,
+      required: false,
+      default: null,
+    },
   },
   {
     timestamps: true,

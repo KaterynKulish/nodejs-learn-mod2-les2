@@ -14,6 +14,9 @@ import { parsePagenationParams } from '../utils/parsePagenationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { librSortFields } from '../db/models/Libr.js';
 import { parseLibrFilterParams } from '../utils/filters/parseLibrFilterParams.js';
+import { saveFileToLocal } from '../utils/saveFileToLocal.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { saveFile } from '../utils/saveFile.js';
 
 export const getLibrsController = async (req, res) => {
   // console.log(req.query); // тут параметри запиту від фронтенту для пагінації
@@ -131,7 +134,15 @@ export const upsertLibrController = async (req, res) => {
 
 export const patchLibrController = async (req, res) => {
   const { id } = req.params;
-  const result = await updateLibr(id, req.body);
+
+  let posterUrl = null;
+  if (req.file) {
+    // posterUrl = await saveFileToLocal(req.file); //для збереження локально
+    // posterUrl = await saveFileToCloudinary(req.file); //для збереження в хмарі
+    posterUrl = await saveFile(req.file); //для збереження по вибору - strategy
+  }
+
+  const result = await updateLibr(id, { ...req.body, posterUrl });
 
   if (!result) {
     throw createHttpError(404, `Libr with id=${id} not found`);

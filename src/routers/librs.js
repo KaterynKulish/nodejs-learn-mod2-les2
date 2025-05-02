@@ -22,6 +22,7 @@ import { validateBody } from '../utils/validateBody.js';
 import { librAddSchema, librUpdateSchema } from '../validation/librs.js';
 
 import { authenticate } from '../middlewares/authenticate.js';
+import { upload } from '../middlewares/multer.js';
 
 librRouter.use(authenticate); //перевірка валідності токену перед всіма запитами
 
@@ -45,6 +46,7 @@ librRouter.put(
 librRouter.patch(
   '/:id',
   isValidId,
+  upload.single('posterUrl'),
   validateBody(librUpdateSchema),
   ctrlWrapper(patchLibrController),
 );

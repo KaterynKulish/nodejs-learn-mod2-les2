@@ -14,6 +14,7 @@ import { getEnvVar } from './utils/getEnvVar.js';
 import { logger } from './middlewares/logger.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+import { UPLOAD_FILE_DIR } from './constants/index.js';
 
 //=========== функція для старту серверу:
 export const startServer = () => {
@@ -25,11 +26,13 @@ export const startServer = () => {
   app.use(express.json()); // прописує express json
   // app.use(logger);
 
+  app.use('/upload', express.static(UPLOAD_FILE_DIR)); // для завантаження зображення/файла
+
   //========== маршрути
   // запит для перевірки, що сервер працює:
 
-  app.use('/librs', librRouter); //в об'єкті librRouter знаходяться обробники для запитів на шлях з librs
   app.use('/auth', authRouter);
+  app.use('/librs', librRouter); //в об'єкті librRouter знаходяться обробники для запитів на шлях з librs
 
   //========== middlewares, потрібні після:
   // запит на адресу, якої немає:
