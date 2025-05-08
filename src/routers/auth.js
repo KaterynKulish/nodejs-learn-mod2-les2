@@ -1,12 +1,18 @@
 import { Router } from 'express';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { validateBody } from '../utils/validateBody.js';
-import { authLoginSchema, authRegisterSchema } from '../validation/auth.js';
 import {
+  authLoginSchema,
+  authRegisterSchema,
+  googleOAuthValidationSchema,
+} from '../validation/auth.js';
+import {
+  getGoogleOauthLinkController,
   loginController,
   logoutController,
   refreshController,
   registerController,
+  signUpOrLoginWithGoogleController,
   verifyController,
 } from '../controllers/auth.js';
 
@@ -33,5 +39,16 @@ authRouter.post('/refresh', ctrlWrapper(refreshController));
 
 //маршрут для logout
 authRouter.post('/logout', ctrlWrapper(logoutController));
+
+authRouter.post(
+  '/get-google-oauth-link',
+  ctrlWrapper(getGoogleOauthLinkController),
+);
+
+authRouter.post(
+  '/login-with-google',
+  validateBody(googleOAuthValidationSchema),
+  ctrlWrapper(signUpOrLoginWithGoogleController),
+);
 
 export default authRouter;

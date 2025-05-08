@@ -16,6 +16,10 @@ import {
 import { sendEmail } from '../utils/sendEmail.js';
 import { getEnvVar } from '../utils/getEnvVar.js';
 import { TEMPLATES_DIR } from '../constants/index.js';
+import {
+  generateGoogleOAuthLink,
+  verifyToken,
+} from '../utils/googleOauthClient.js';
 
 const createSession = () => {
   const accessToken = randomBytes(30).toString('base64');
@@ -159,4 +163,32 @@ export const refreshUser = async ({ refreshToken, sessionId }) => {
 
 export const logoutUser = async (sessionId) => {
   await SessionCollection.deleteOne({ _id: sessionId });
+};
+
+export const getGoogleLink = () => {
+  return generateGoogleOAuthLink();
+};
+
+export const loginOrSignupWithGoogle = async (code) => {
+  const tokenPayload = await verifyToken(code);
+
+  const { email } = tokenPayload;
+
+  let user = await UserCollection.findOne({ email });
+  if (!user) {
+    user = await UserCollection.create({
+      username: tokenPayload.name,
+      email,
+      password: randomBytes(30).toString('base64'),
+      verify: tokenPayload.email_verified,
+    });
+  }
+
+  await SessionCollection.findOneAndDelete({ userId: user._id });
+
+  const newSession = createSession();
+  return SessionCollection.create({
+    userId: user._id,
+    ...newSession,
+  });
 };

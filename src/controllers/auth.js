@@ -1,4 +1,6 @@
 import {
+  getGoogleLink,
+  loginOrSignupWithGoogle,
   loginUser,
   logoutUser,
   refreshUser,
@@ -90,4 +92,30 @@ export const logoutController = async (req, res) => {
   res.clearCookie('refreshToken');
 
   res.status(204).send();
+};
+
+export const getGoogleOauthLinkController = (req, res) => {
+  const oauthLink = getGoogleLink();
+
+  res.json({
+    status: 200,
+    message: 'Google OAuth link retrieved successfully',
+    data: {
+      link: oauthLink,
+    },
+  });
+};
+
+export const signUpOrLoginWithGoogleController = async (req, res) => {
+  const { code } = req.body;
+  const session = await loginOrSignupWithGoogle(code);
+
+  setupSession(res, session);
+  res.json({
+    status: 200,
+    message: 'User logged in with google OAuth!',
+    data: {
+      accessToken: session.accessToken,
+    },
+  });
 };
