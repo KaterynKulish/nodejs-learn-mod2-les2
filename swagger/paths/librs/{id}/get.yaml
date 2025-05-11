@@ -1,0 +1,37 @@
+tags:
+  - Librs
+summary: Get libr by id
+operationId: getLibr
+description: 'Get libr by id'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path # параметр в шляху в {}
+    name: id
+    required: true
+    schema:
+      type: string
+      example: '65ca67e7ae7f10c88b598384'
+responses:
+  '200':
+    description: 'Get libr by id'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully find libr with id=65ca67e7ae7f10c88b598384!
+            data:
+              type: object
+              $ref: '../../../components/schemas/libr.yaml'
+  '401':
+    $ref: '../../../components/responses/401.yaml'

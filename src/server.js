@@ -15,6 +15,7 @@ import { logger } from './middlewares/logger.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { UPLOAD_FILE_DIR } from './constants/index.js';
+import { swaggerDocs } from './middlewares/swaggerDocs.js';
 
 //=========== функція для старту серверу:
 export const startServer = () => {
@@ -33,6 +34,8 @@ export const startServer = () => {
 
   app.use('/auth', authRouter);
   app.use('/librs', librRouter); //в об'єкті librRouter знаходяться обробники для запитів на шлях з librs
+
+  app.use('/api-docs', swaggerDocs());
 
   //========== middlewares, потрібні після:
   // запит на адресу, якої немає:

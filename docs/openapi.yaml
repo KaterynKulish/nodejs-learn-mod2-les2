@@ -1,0 +1,30 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: My librs app
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  description: This is a documentation of my librs app
+tags: # тут ендпоінти для маршрутів
+  - name: Librs
+    description: Operations about librs.
+  - name: Auth
+    description: Auth operations.
+servers:
+  - url: http://localhost:3000
+  - url: https://example.com/api/v1 #посилання на задеплоєний сайт
+paths:
+  /librs:
+    get:
+      $ref: ../swagger/paths/librs/get.yaml
+    post:
+      $ref: ../swagger/paths/librs/post.yaml
+  /librs/{id}:
+    get:
+      $ref: ../swagger/paths/librs/{id}/get.yaml
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

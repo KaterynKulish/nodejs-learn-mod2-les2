@@ -1,0 +1,38 @@
+type: object
+required:
+  - _id
+  - title
+  - genre
+  - total_page
+  - year
+  - userId
+  # - posterUrl
+properties:
+  _id:
+    description: "Libr's id"
+    type: string
+    example: 65e4decdd286b30065d54af9
+  title:
+    description: "Libr's title"
+    type: string
+    example: 'Kolobok'
+  genre:
+    description: "Libr's genre"
+    type: string
+    enum: ['kids', 'roman', 'adventures']
+  total_page:
+    description: "Libr's total page"
+    type: number
+    example: 90
+  year:
+    description: "Libr's production year"
+    type: number
+    example: 1960
+  userId:
+    description: "Libr's user id"
+    type: string
+    example: 65e4decdd286b30065d54af9
+  posterUrl: # не обов'язковий, але теж можна описати
+    description: "Link to libr's poster"
+    type: string
+    example: https://res.cloudinary.com/uqwgdu/image/upload/image.png

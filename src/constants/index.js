@@ -7,3 +7,5 @@ export const TEMPLATES_DIR = path.resolve('src', 'templates'); // шлях до 
 export const TEMPORARY_FILE_DIR = path.resolve('temp'); // шлях до тимчасової папки для збереження зображення/файла
 
 export const UPLOAD_FILE_DIR = path.resolve('upload'); // шлях до постійної папки для перенесення в локально зображення/файла
+
+export const SWAGGER_PATH = path.resolve('docs', 'swagger.json'); //шлях до файлу для документації swagger

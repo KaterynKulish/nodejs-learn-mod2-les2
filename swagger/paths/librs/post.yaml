@@ -1,0 +1,60 @@
+tags:
+  - Librs
+summary: Create libr
+operationId: createLibr
+description: 'Create a libr with payload'
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required: # це ті поля, що передаються в body, опис в /validation
+          - title
+          - total_page
+          - year
+        properties:
+          title:
+            description: "Libr's name"
+            type: string
+            example: 'Kolobok'
+          total_page:
+            description: "Libr's total page"
+            type: number
+            example: 12
+          genre:
+            description: "Libr's genre"
+            type: string
+            enum: ['kids', 'roman', 'adventures']
+          year:
+            description: "Libr's production year"
+            type: number
+            example: 1960
+          posterUrl:
+            description: "Libr's poster"
+            type: string
+            format: binary
+responses:
+  '201':
+    description: Creates a libr
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully add libr
+            data:
+              type: object
+              $ref: '../../components/schemas/libr.yaml'
+  '401':
+    $ref: '../../components/responses/401.yaml'
